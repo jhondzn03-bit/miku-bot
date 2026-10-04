@@ -7,6 +7,15 @@ module.exports = {
   categoria: 'general',
 
   run: async (client, m, args, from, isCreator, ctx = {}) => {
+
+    // Reacción al mensaje que usa .menu
+    await client.sendMessage(from, {
+      react: {
+        text: '🎃',
+        key: m.key
+      }
+    });
+
     const prefix = ctx?.prefix || '.';
     const settings = ctx?.settings || {};
 
@@ -224,9 +233,9 @@ module.exports = {
     const caption =
 `╭────── 🕸️ ──────╮
 │
-│    𝙼𝙸𝙺𝚄 - 𝙱𝙾𝚃
+│   𝙼𝙸𝙺𝚄 - 𝙱𝙾𝚃
 │
-│    🎃 Halloween Edition
+│   🎃 Halloween Edition
 │
 ╰────── 🕸️ ──────╯
 
@@ -256,9 +265,9 @@ module.exports = {
 
 ${sections}╭────── 👻 ──────╮
 │
-│    🦇 𝙼𝙸𝙺𝚄 - 𝙱𝙾𝚃
+│   🦇 𝙼𝙸𝙺𝚄 - 𝙱𝙾𝚃
 │
-│    🎃 Happy Halloween
+│   🎃 Happy Halloween
 │
 ╰────── 👻 ──────╯`;
 

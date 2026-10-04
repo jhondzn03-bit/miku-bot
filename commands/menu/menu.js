@@ -11,7 +11,7 @@ module.exports = {
     // Reacción al mensaje que usa .menu
     await client.sendMessage(from, {
       react: {
-        text: '🎃',
+        text: '🏚️',
         key: m.key
       }
     });
@@ -34,6 +34,7 @@ module.exports = {
       String(mm).padStart(2, '0') + ':' +
       String(ss).padStart(2, '0');
 
+    // Categorías
     const CAT_META = {
       descargas: {
         icon: '🎃',
@@ -46,7 +47,7 @@ module.exports = {
       },
 
       juegos: {
-        icon: '🎮',
+        icon: '🧌',
         title: '𝙹𝚞𝚎𝚐𝚘𝚜'
       },
 
@@ -81,7 +82,7 @@ module.exports = {
       'general'
     ];
 
-    // Comandos que NO aparecen en el menú
+    // Comandos ocultos
     const HIDDEN = new Set([
       'menu', 'help', 'comandos',
 
@@ -148,6 +149,7 @@ module.exports = {
 
     if (global.comandos) {
       for (const [, mod] of global.comandos) {
+
         const mainCmd = Array.isArray(mod.command)
           ? mod.command[0]
           : mod.command;
@@ -184,6 +186,19 @@ module.exports = {
       '╭────── 🎃 ──────╮',
       '╭────── 🕯️ ──────╮',
       '╭────── 👻 ──────╮',
+      '╭────── 🏚️ ──────╮',
+      '╭────── 🧌 ──────╮',
+      '╭────── 🐦‍🔥 ──────╮'
+    ];
+
+    // Emojis para los comandos
+    const CMD_ICONS = [
+      '🕯️',
+      '🦇',
+      '🎃',
+      '👻',
+      '🕸️',
+      '🐦‍🔥'
     ];
 
     const allCats = [
@@ -196,6 +211,7 @@ module.exports = {
     let sections = '';
 
     allCats.forEach((cat, i) => {
+
       const meta = CAT_META[cat] || {
         icon: '👻',
         title: cat.toUpperCase()
@@ -208,22 +224,26 @@ module.exports = {
 │
 │  ${meta.icon}  ${meta.title}
 │
-├────────────────────
+├────────── 🕸️ ──────────
 │
 `;
 
-      for (const { cmd, desc } of grouped[cat]) {
-        block += `│  🕸️  \`${prefix}${cmd}\`\n`;
+      grouped[cat].forEach(({ cmd, desc }, index) => {
+
+        const icon =
+          CMD_ICONS[index % CMD_ICONS.length];
+
+        block += `│  ${icon}  \`${prefix}${cmd}\`\n`;
 
         if (desc) {
           block += `│      ╰─➤ _${desc}_\n`;
         }
 
         block += `│\n`;
-      }
+      });
 
       block +=
-`╰────────────────────
+`╰────────── 👻 ──────────╯
 
 `;
 
@@ -233,45 +253,47 @@ module.exports = {
     const caption =
 `╭────── 🕸️ ──────╮
 │
-│   𝙼𝙸𝙺𝚄 - 𝙱𝙾𝚃
+│   🎃 𝙼𝙸𝙺𝚄 - 𝙱𝙾𝚃
 │
-│   🎃 Halloween Edition
+│   👻 𝙷𝚊𝚕𝚕𝚘𝚠𝚎𝚎𝚗 𝙴𝚍𝚒𝚝𝚒𝚘𝚗
 │
 ╰────── 🕸️ ──────╯
 
-╭────── 🦇 ──────╮
-│
-│  🎤 𝙷𝚊𝚝𝚜𝚞𝚗𝚎 𝙼𝚒𝚔𝚞
-│
-│  ⟡ Vocaloid Music System ⟡
-│
-╰────── 🦇 ──────╯
+🏚️ 𝙱𝚒𝚎𝚗𝚟𝚎𝚗𝚒𝚍𝚘 𝚊 𝚕𝚊 𝚌𝚊𝚜𝚊 𝚍𝚎 𝙼𝚒𝚔𝚞...
 
-╭────── 🕯️ 𝙴𝚜𝚝𝚊𝚍𝚘 ──────╮
+🦇 𝙲𝚞𝚒𝚍𝚊𝚍𝚘 𝚌𝚘𝚗 𝚕𝚘 𝚚𝚞𝚎 𝚊𝚙𝚊𝚛𝚎𝚌𝚎 𝚎𝚗 𝚕𝚊 𝚘𝚜𝚌𝚞𝚛𝚒𝚍𝚊𝚍. 👻
+
+╭────── 🕯️ 𝙸𝚗𝚏𝚘 ──────╮
 │
-│  🎃  *Prefijo*
+│  🎃  *𝙿𝚛𝚎𝚏𝚒𝚓𝚘*
 │      \`${prefix}\`
 │
-│  🧪  *API*
+│  🧪  *𝙰𝙿𝙸*
 │      ${apiReady ? '🟢 _Activa_' : '🔴 _Pendiente_'}
 │
-│  ⏳  *Uptime*
+│  ⏳  *𝚄𝚙𝚝𝚒𝚖𝚎*
 │      \`${uptime}\`
 │
-│  📜  *Comandos*
+│  📜  *𝙲𝚘𝚖𝚊𝚗𝚍𝚘𝚜*
 │      \`${seen.size}\`
 │
-╰──────────────────────╯
+╰────── 🕯️ ──────╯
 
-${sections}╭────── 👻 ──────╮
+🐦‍🔥 𝙻𝚊 𝚗𝚘𝚌𝚑𝚎 𝚊𝚙𝚎𝚗𝚊𝚜 𝚌𝚘𝚖𝚒𝚎𝚗𝚣𝚊...
+
+${sections}
+╭────── 👻 ──────╮
 │
 │   🦇 𝙼𝙸𝙺𝚄 - 𝙱𝙾𝚃
 │
-│   🎃 Happy Halloween
+│   🎃 𝙷𝚊𝚙𝚙𝚢 𝙷𝚊𝚕𝚕𝚘𝚠𝚎𝚎𝚗
 │
-╰────── 👻 ──────╯`;
+│   🏚️ 𝙽𝚘 𝚎𝚗𝚝𝚛𝚎𝚜 𝚊 𝚕𝚊 𝚌𝚊𝚜𝚊...
+│
+╰────── 🕸️ ──────╯`;
 
     try {
+
       const imagePath = path.join(
         process.cwd(),
         'videos-imagenes',
@@ -290,6 +312,7 @@ ${sections}╭────── 👻 ──────╮
       );
 
     } catch {
+
       await client.sendMessage(
         m.key.remoteJid,
         {

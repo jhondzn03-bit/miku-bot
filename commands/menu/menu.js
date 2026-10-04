@@ -11,7 +11,7 @@ module.exports = {
     // Reacción al mensaje que usa .menu
     await client.sendMessage(from, {
       react: {
-        text: '🏚️',
+        text: '👻',
         key: m.key
       }
     });
@@ -34,7 +34,10 @@ module.exports = {
       String(mm).padStart(2, '0') + ':' +
       String(ss).padStart(2, '0');
 
-    // Categorías
+    // ============================================================
+    // CATEGORÍAS
+    // ============================================================
+
     const CAT_META = {
       descargas: {
         icon: '🎃',
@@ -82,7 +85,10 @@ module.exports = {
       'general'
     ];
 
-    // Comandos ocultos
+    // ============================================================
+    // COMANDOS OCULTOS
+    // ============================================================
+
     const HIDDEN = new Set([
       'menu', 'help', 'comandos',
 
@@ -144,6 +150,10 @@ module.exports = {
       'stats',
     ]);
 
+    // ============================================================
+    // AGRUPAR COMANDOS
+    // ============================================================
+
     const grouped = {};
     const seen = new Set();
 
@@ -179,7 +189,10 @@ module.exports = {
       }
     }
 
-    // Separadores Halloween
+    // ============================================================
+    // SEPARADORES HALLOWEEN
+    // ============================================================
+
     const DIVS = [
       '╭────── 🕸️ ──────╮',
       '╭────── 🦇 ──────╮',
@@ -191,7 +204,10 @@ module.exports = {
       '╭────── 🐦‍🔥 ──────╮'
     ];
 
-    // Emojis para los comandos
+    // ============================================================
+    // ICONOS DE COMANDOS
+    // ============================================================
+
     const CMD_ICONS = [
       '🕯️',
       '🦇',
@@ -207,6 +223,10 @@ module.exports = {
         c => !CAT_ORDER.includes(c) && grouped[c]?.length
       ),
     ];
+
+    // ============================================================
+    // CONSTRUIR SECCIONES
+    // ============================================================
 
     let sections = '';
 
@@ -224,31 +244,32 @@ module.exports = {
 │
 │  ${meta.icon}  ${meta.title}
 │
-├────────── 🕸️ ──────────
-│
-`;
+├────────── 🕸️ ──────────`;
 
       grouped[cat].forEach(({ cmd, desc }, index) => {
 
         const icon =
           CMD_ICONS[index % CMD_ICONS.length];
 
-        block += `│  ${icon}  \`${prefix}${cmd}\`\n`;
+        block += `\n│  ${icon}  \`${prefix}${cmd}\``;
 
         if (desc) {
-          block += `│      ╰─➤ _${desc}_\n`;
+          block += `\n│      ╰─➤ _${desc}_`;
         }
-
-        block += `│\n`;
       });
 
       block +=
-`╰────────── 👻 ──────────╯
+`
+╰────────── 👻 ──────────
 
 `;
 
       sections += block;
     });
+
+    // ============================================================
+    // MENÚ PRINCIPAL
+    // ============================================================
 
     const caption =
 `╭────── 🕸️ ──────╮
@@ -291,6 +312,10 @@ ${sections}
 │   🏚️ 𝙽𝚘 𝚎𝚗𝚝𝚛𝚎𝚜 𝚊 𝚕𝚊 𝚌𝚊𝚜𝚊...
 │
 ╰────── 🕸️ ──────╯`;
+
+    // ============================================================
+    // ENVIAR MENÚ
+    // ============================================================
 
     try {
 

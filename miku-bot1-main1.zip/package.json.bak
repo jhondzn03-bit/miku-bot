@@ -1,0 +1,27 @@
+{
+  "name": "miku-bot",
+  "version": "1.0.0",
+  "description": "Bot WhatsApp Miku - FSociety",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "@dvyer/baileys": "github:DevYerZx/fsociety-Baileys#main",
+    "@hapi/boom": "^10.0.1",
+    "axios": "^1.9.0",
+    "cheerio": "^1.0.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "form-data": "^4.0.1",
+    "moment-timezone": "^0.5.45",
+    "node-cron": "^4.2.1",
+    "node-webpmux": "^3.1.9",
+    "pino": "^9.6.0",
+    "qrcode-terminal": "^0.12.0",
+    "xml2js": "^0.6.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

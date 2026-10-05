@@ -1,12 +1,10 @@
+
 {
   "prefix": ".",
   "ownerNumber": [
-    "50375638328",
-    "51930108242",
-    "51966440866",
-    "59177474230"
+    "50375638328"
   ],
-  "botNumber": "51930108242",
+  "botNumber": "50368309162",
   "authFolder": "/home/ubuntu/miku-bot1/session/miku-bot",
   "pairingMode": "",
   "phoneNumber": "",
@@ -16,9 +14,7 @@
   "groupOptions": {},
   "antiLinkWarnings": {},
   "ownerLids": [
-    "26195676684428",
-    "19538443825267",
-    "261534165020811"
+    "26195676684428"
   ],
   "adminLid": "26195676684428"
 }

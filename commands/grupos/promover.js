@@ -13,35 +13,42 @@ module.exports = {
     if (!targets.length) {
       return client.sendMessage(from, {
         text:
-`꧁𖨆᭄𐂂꧂ PROMOVER A ADMIN ꧁𖨆᭄𐂂꧂
-
-🌸 *Uso:*
-➜ .promover @usuario
-➜ .promover (responder mensaje)
-
-👑 El usuario se convertirá en admin.`
+`╭━━━ 🎃 𝙼𝙸𝙺𝚄 - 𝙱𝙾𝚃 🎃 ━━━╮
+┃
+┃ 🕸️ 𝙋𝙍𝙊𝙈𝙊𝙑𝙀𝙍 𝘼 𝘼𝘿𝙈𝙄𝙉 🕸️
+┃
+┃ 🦇 𝙐𝙨𝙤:
+┃ ➜ .promover @usuario
+┃ ➜ .promover (responder mensaje)
+┃
+┃ 👑 El usuario se convertirá
+┃    en administrador.
+┃
+╰━━━━━━━━━━━━━━━━━━━━╯`
       }, { quoted: m });
     }
 
     const results = [];
+
     for (const jid of targets) {
       try {
         await client.groupParticipantsUpdate(from, [jid], 'promote');
-        results.push(`✅ @${jid.split('@')[0]} ahora es *admin*`);
+        results.push(`🎃 @${jid.split('@')[0]} ➜ 𝘼𝙃𝙊𝙍𝘼 𝙀𝙎 *𝘼𝘿𝙈𝙄𝙉* 👑`);
       } catch {
-        results.push(`❌ No pude promover a @${jid.split('@')[0]}`);
+        results.push(`💀 @${jid.split('@')[0]} ➜ 𝙉𝙊 𝙎𝙀 𝙋𝙐𝘿𝙊 𝙋𝙍𝙊𝙈𝙊𝙑𝙀𝙍`);
       }
     }
 
     await client.sendMessage(from, {
       text:
-`꧁𖨆᭄𐂂꧂ PROMOCIÓN ꧁𖨆᭄𐂂꧂
-
-${results.join('\n')}
-
-━━━━━━━━━━━━━━━━━━
-💙 𝓜𝓲𝓴𝓾 𝓑𝓸𝓽 — Admin tools
-━━━━━━━━━━━━━━━━━━`,
+`╭━━━ 🎃 𝙼𝙸𝙺𝚄 - 𝙱𝙾𝚃 🎃 ━━━╮
+┃
+┃ 🕸️ 𝙋𝙍𝙊𝙈𝙊𝘾𝙄Ó𝙉 👑
+┃
+${results.map(r => `┃ ${r}`).join('\n')}
+┃
+╰━━━━━━━━━━━━━━━━━━━━╯
+      🦇 𝙈𝙄𝙆𝙐 𝘼𝘿𝙈𝙄𝙉 𝙏𝙊𝙊𝙇𝙎 🎃`,
       mentions: targets,
     }, { quoted: m });
   },

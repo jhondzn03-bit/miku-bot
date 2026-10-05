@@ -14,7 +14,7 @@ module.exports = {
 
     await client.sendMessage(from, {
       react: {
-        text: '⚜️',
+        text: '🧛🏻',
         key: m.key
       }
     });

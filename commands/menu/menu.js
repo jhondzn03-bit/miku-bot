@@ -9,12 +9,23 @@ module.exports = {
   run: async (client, m, args, from, isCreator, ctx = {}) => {
 
     // ============================================================
-    // REACCIÓN
+    // REACCIÓN ALEATORIA
     // ============================================================
+
+    const REACTIONS = [
+      '🧛🏻',
+      '🎃',
+      '🏚️',
+      '🐦‍🔥',
+      '🐸'
+    ];
+
+    const randomReaction =
+      REACTIONS[Math.floor(Math.random() * REACTIONS.length)];
 
     await client.sendMessage(from, {
       react: {
-        text: '🧛🏻',
+        text: randomReaction,
         key: m.key
       }
     });
@@ -367,7 +378,7 @@ ${sections}
 │
 │ 🦇 𝙼𝙸𝙺𝚄 - 𝙱𝙾𝚃
 │ 🎃 𝙷𝚊𝚙𝚙𝚢 𝙷𝚊𝚕𝚕𝚘𝚠𝚎𝚎𝚗
-│ 🏚️ 𝙽𝚘 𝚎𝚗𝚝𝚛𝚎𝚜 𝚊 𝚕𝚊 𝚌𝚊𝚜𝚊...
+│ 🏚️ 𝙽𝚘 𝚎𝚗𝚝𝚛𝚎𝚜 𝚊 𝚌𝚊𝚜𝚊...
 │
 ╰───── 🕸️ ─────╯`;
 

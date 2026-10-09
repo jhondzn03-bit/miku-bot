@@ -22,7 +22,7 @@ let downloadMediaMessage, getContentType, makeCacheableSignalKeyStore;
 
 async function loadBaileys() {
   try {
-    const mod = await import("@whiskeysockets/baileys');
+      const mod = await import('@whiskeysockets/baileys');
     const root = mod.default || mod;
 
     makeWASocket              = root.default || root.makeWASocket || root;

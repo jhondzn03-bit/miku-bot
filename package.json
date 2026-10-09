@@ -8,9 +8,13 @@
     "dev": "node --watch index.js"
   },
   "dependencies": {
+<<<<<<< HEAD
 "speedtest-net": "^2.2.0"   
 "@whiskeysockets/baileys": "github:Matthieu-x/noth-bails",
+=======
+>>>>>>> 0b9ee7e (Add speedtest-net dependency)
     "@hapi/boom": "^10.0.1",
+    "@whiskeysockets/baileys": "github:Matthieu-x/noth-bails",
     "axios": "^1.9.0",
     "cheerio": "^1.0.0",
     "fluent-ffmpeg": "^2.1.2",
@@ -20,6 +24,7 @@
     "node-webpmux": "^3.1.9",
     "pino": "^9.6.0",
     "qrcode-terminal": "^0.12.0",
+    "speedtest-net": "^2.2.0",
     "xml2js": "^0.6.2"
   },
   "engines": {

@@ -24,7 +24,7 @@ module.exports = {
     const settings = ctx?.settings || {};
     const owner = Array.isArray(settings.ownerNumber)
       ? settings.ownerNumber.join(', ')
-      : String(settings.ownerNumber || '393209533090');
+      : String(settings.ownerNumber || '5492645746772');
     const mem = process.memoryUsage();
 
     const text =

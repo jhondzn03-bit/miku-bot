@@ -1,157 +1,163 @@
-const fs = require('fs');
-const path = require('path');
+const CHANNEL = 'https://whatsapp.com/channel/0029VbDTdbbGehEKhy23fK2h';
 
-const BANNER_URL = 'https://raw.githubusercontent.com/starlyn-chann/Mistic-star/main/tourl/1791603820371-dIKpfw667LVA.jpg';
+const CATS = {
+  descargas: ['📥', 'Zona de descargas'],
+  grupos: ['🫂', 'Herramientas para grupos'],
+  juegos: ['🎮', 'Zona de juegos'],
+  herramientas: ['🧰', 'Herramientas útiles'],
+  sistema: ['⚙️', 'Estado del sistema'],
+  owner: ['🔐', 'Comandos privados'],
+  general: ['🌿', 'Comandos generales']
+};
+
+const ORDER = [
+  'descargas', 'grupos', 'juegos',
+  'herramientas', 'sistema', 'owner', 'general'
+];
 
 module.exports = {
   command: ['menu', 'help', 'comandos'],
-  description: 'Muestra el menú de comandos',
+  description: 'Menú principal de Miku',
   categoria: 'general',
 
   run: async (client, m, args, from, isCreator, ctx = {}) => {
-
-    const REACTIONS = ['💜', '⚡', '𖤐', '✨', '🪻'];
-    const randomReaction = REACTIONS[Math.floor(Math.random() * REACTIONS.length)];
-    await client.sendMessage(from, {
-      react: { text: randomReaction, key: m.key }
-    });
-
     const prefix = ctx?.prefix || '.';
-    const settings = ctx?.settings || {};
-    const apiReady = Boolean(String(settings.apiBaseUrl || '').trim() && String(settings.apiKey || '').trim());
-
-    const up = Math.floor(process.uptime());
-    const h = Math.floor(up / 3600);
-    const mm = Math.floor((up % 3600) / 60);
-    const ss = up % 60;
-    const uptime = String(h).padStart(2, '0') + ':' + String(mm).padStart(2, '0') + ':' + String(ss).padStart(2, '0');
-
-    const CAT_META = {
-      descargas: { icon: '💿', title: '𝙳𝙴𝚂𝙲𝙰𝚁𝙶𝙰𝚂' },
-      grupos: { icon: '👥', title: '𝙶𝚁𝚄𝙿𝙾𝚂' },
-      juegos: { icon: '🎮', title: '𝙹𝚄𝙴𝙶𝙾𝚂' },
-      herramientas: { icon: '🛠️', title: '𝙷𝙴𝚁𝚁𝙰𝙼𝙸𝙴𝙽𝚃𝙰𝚂' },
-      sistema: { icon: '⚙️', title: '𝚂𝙸𝚂𝚃𝙴𝙼𝙰' },
-      owner: { icon: '👑', title: '𝙾𝚆𝙽𝙴𝚁' },
-      general: { icon: '✦', title: '𝙶𝙴𝙽𝙴𝚁𝙰𝙻' }
-    };
-
-    const CAT_ORDER = ['descargas','grupos','juegos','herramientas','sistema','owner','general'];
-
-    const HIDDEN = new Set([
-      'menu','help','comandos','antispamstickers','antispamimage','antispamimages','antispamvideos',
-      'antispamaudios','antispamvoice','everyone','mencionartodos','ban','addadmin','removeadmin',
-      'quitaradmin','del','delete','adivina','numero','guess','verdad','pregunta','truth','reto',
-      'challenge','desafio','ruleta','wheel','suerte','time','reloj','system','estado','botinfo',
-      'info','velocidad','ping','internet','conexion','groupinfo','ginfo','fecha','dia','recursos','stats'
-    ]);
-
+    const jid = m.sender || m.key?.participant || from;
+    const number = String(jid).split('@')[0].split(':')[0];
+    const mention = `@${number}`;
     const grouped = {};
     const seen = new Set();
+
+    try {
+      await client.sendMessage(from, {
+        react: { text: '🌱', key: m.key }
+      });
+    } catch {}
+
     if (global.comandos) {
       for (const [, mod] of global.comandos) {
-        const mainCmd = Array.isArray(mod.command)? mod.command[0] : mod.command;
-        if (!mainCmd || seen.has(String(mainCmd).toLowerCase()) || HIDDEN.has(String(mainCmd).toLowerCase())) continue;
-        seen.add(String(mainCmd).toLowerCase());
+        if (!mod?.command) continue;
+
+        const aliases = Array.isArray(mod.command)
+          ? mod.command : [mod.command];
+
+        const main = String(aliases[0] || '').toLowerCase();
         const cat = String(mod.categoria || 'general').toLowerCase();
+
+        if (!main || seen.has(main)) continue;
+        if (['menu', 'help', 'comandos'].includes(main)) continue;
+        if (cat === 'menu') continue;
+
+        seen.add(main);
         if (!grouped[cat]) grouped[cat] = [];
-        grouped[cat].push({ cmd: mainCmd, desc: mod.description || '' });
+
+        grouped[cat].push({
+          aliases: aliases.map(x => String(x)),
+          desc: String(mod.description || '')
+        });
       }
     }
 
-    for (const cat of Object.keys(grouped)) {
-      grouped[cat].sort((a, b) => String(a.cmd).localeCompare(String(b.cmd)));
+    for (const list of Object.values(grouped)) {
+      list.sort((a, b) => a.aliases[0].localeCompare(b.aliases[0]));
     }
 
-    const DIVS = ['╭━━━〔 𖤐 〕━━━╮','╭━━━〔 ✦ 〕━━━╮','╭━━━〔 ⚡ 〕━━━╮','╭━━━〔 ♡ 〕━━━╮','╭━━━〔 ✧ 〕━━━╮'];
-    const CMD_ICONS = ['✦','➤','⚡','✧','♡','𖤐'];
-    const allCats = [...CAT_ORDER.filter(c => grouped[c]?.length),...Object.keys(grouped).filter(c =>!CAT_ORDER.includes(c) && grouped[c]?.length)];
+    const categories = [
+      ...ORDER.filter(c => grouped[c]?.length),
+      ...Object.keys(grouped).filter(
+        c => !ORDER.includes(c) && grouped[c]?.length
+      )
+    ];
 
-    let sections = '';
-    allCats.forEach((cat, i) => {
-      const meta = CAT_META[cat] || { icon: '✦', title: String(cat).toUpperCase() };
-      let block = `${DIVS[i % DIVS.length]}\n│\n│ ${meta.icon} ${meta.title}\n│\n╰┈┈┈┈┈┈`;
-      grouped[cat].forEach(({ cmd, desc }, index) => {
-        const icon = CMD_ICONS[index % CMD_ICONS.length];
-        block += `\n│\n│ ${icon} \`${prefix}${cmd}\``;
-        if (desc) {
-          const words = String(desc).split(/\s+/);
-          const lines = [];
-          let current = '';
-          for (const word of words) {
-            if ((current + ' ' + word).trim().length > 30) {
-              if (current.trim()) lines.push(current.trim());
-              current = word;
-            } else {
-              current += ' ' + word;
-            }
-          }
-          if (current.trim()) lines.push(current.trim());
-          lines.forEach((line, lineIndex) => {
-            block += lineIndex === 0? `\n│ ╰─➤ _${line}_` : `\n│ _${line}_`;
-          });
-        }
-      });
-      block += `\n│\n╰━━━━━━━━━━━━━━━━━━╯\n\n`;
-      sections += block;
-    });
+    const seconds = Math.floor(process.uptime());
+    const uptime = [
+      Math.floor(seconds / 3600),
+      Math.floor((seconds % 3600) / 60),
+      seconds % 60
+    ].map(n => String(n).padStart(2, '0')).join(':');
 
-    const caption =
-`╭━━━━━━━━〔 𖤐 〕━━━━━━━━╮
-│
-│ 𖤐『𝙼𝙸𝙺𝚄 - 𝙱𝙾𝚃』𖤐
-│
-│ ✦ 𝙿𝚁𝙴𝙼𝙸𝚄𝙼 𝙱𝙾𝚃 ✦
-│ ⚡ 𝚂𝚝𝚢𝚕𝚎 • 𝙿𝚘𝚠𝚎𝚛 • 𝙲𝚊𝚕𝚒𝚍𝚊𝚍
-│
-╰━━━━━━━━〔 𖤐 〕━━━━━━━━╯
+    const selected = String(args[0] || '').toLowerCase();
+    const validSelected = selected && selected !== 'inicio';
 
-       ♡ 𝙱𝙸𝙴𝙽𝚅𝙴𝙽𝙸𝙳𝙾 ♡
-
-   𝙴𝚕 𝚙𝚘𝚍𝚎𝚛 𝚍𝚎 𝙼𝚒𝚔𝚞
-   𝚎𝚜𝚝𝚊́ 𝚎𝚗 𝚝𝚞𝚜 𝚖𝚊𝚗𝚘𝚜... ✨
-
-╭━━━━━━〔 ✦ 〕━━━━━━╮
-│ 𝙸𝙽𝙵𝙾𝚁𝙼𝙰𝙲𝙸𝙾́𝙽
-├━━━━━━━━━━━━━━━━━━━
-│
-│ 𖤐 𝙿𝚛𝚎𝚏𝚒𝚓𝚘
-│ ╰➤ \`${prefix}\`
-│
-│ ⚙️ 𝙴𝚜𝚝𝚊𝚍𝚘 𝙰𝙿𝙸
-│ ╰➤ ${apiReady? '🟢 _Activa_' : '🔴 _Pendiente_'}
-│
-│ ⏱️ 𝚃𝚒𝚎𝚖𝚙𝚘 𝚊𝚌𝚝𝚒𝚟𝚘
-│ ╰➤ \`${uptime}\`
-│
-│ 📚 𝙲𝚘𝚖𝚊𝚗𝚍𝚘𝚜
-│ ╰➤ \`${seen.size}\`
-│
-╰━━━━━━━━━━━━━━━━━━━╯
-
-          ✧ 𝙲𝙾𝙼𝙰𝙽𝙳𝙾𝚂 ✧
-       𖤐━━━━━━━━━━━━𖤐
-
-${sections}
-╭━━━━━━━━〔 ♡ 〕━━━━━━━━╮
-│
-│ 𖤐『𝙼𝙸𝙺𝚄 - 𝙱𝙾𝚃』𖤐
-│
-│ ⚡ 𝙶𝚛𝚊𝚌𝚒𝚊𝚜 𝚙𝚘𝚛 𝚞𝚜𝚊𝚛 𝙼𝚒𝚔𝚞
-│ ✦ 𝚂𝚒𝚎𝚖𝚙𝚛𝚎 𝚊 𝚘𝚝𝚛𝚘 𝚗𝚒𝚟𝚎𝚕 ✦
-│
-╰━━━━━━━━〔 ♡ 〕━━━━━━━━╯`;
-
-    // BANNER FIJO DESDE URL
-    try {
-      await client.sendMessage(m.key.remoteJid, {
-        image: { url: BANNER_URL },
-        caption
+    if (validSelected && !grouped[selected]?.length) {
+      await client.sendMessage(from, {
+        text: `🌸 @${number}, no encontré esa categoría.\nUsa *${prefix}menu* para ver el menú completo.`,
+        mentions: [jid]
       }, { quoted: m });
-    } catch (err) {
-      console.log('[MENU ERROR BANNER]', err.message);
-      // fallback a texto si falla la imagen
-      await client.sendMessage(m.key.remoteJid, { text: caption }, { quoted: m });
+      return;
     }
+
+    let text = '';
+
+    if (validSelected) {
+      const meta = CATS[selected] || ['🍃', selected.toUpperCase()];
+
+      text =
+`🌿 MIKU / SECCIÓN
+
+¡Hola, ${mention}! Aquí tienes esta sección.
+
+${meta[0]} *${meta[1]}*
+
+`;
+
+      for (const item of grouped[selected]) {
+        text += `› *${item.aliases.map(x => prefix + x).join(' · ')}*\n`;
+        if (item.desc) text += `  ${item.desc}\n`;
+        text += '\n';
+      }
+
+      text += `Usa *${prefix}menu* para volver al menú principal.`;
+    } else {
+      text =
+`🌸 MIKU • BOT GARDEN 🌱
+
+Canal oficial de Miku:
+${CHANNEL}
+
+╭────── PERFIL ──────
+│ 🌿 Bot: Miku
+│ 🧑‍💻 Desarrollador: Alex
+│ 🔹 Prefijo: ${prefix}
+│ ⏱️ Tiempo activa: ${uptime}
+│ 🧩 Comandos: ${seen.size}
+│ 📂 Secciones: ${categories.length}
+╰───────────────────
+
+¡Hola, ${mention}! Bienvenido/a a mi jardín digital.
+
+✧ Aquí tienes todas mis secciones:
+`;
+      text += '\n━━━━━━━━━━━━━━━━━━\n';
+
+      for (const cat of categories) {
+        const meta = CATS[cat] || ['🍃', cat.toUpperCase()];
+
+        text += `\n${meta[0]} *${meta[1].toUpperCase()}*\n`;
+        text += `┌─────────────────\n`;
+
+        for (const item of grouped[cat]) {
+          text += `│ ❯ *${item.aliases.map(x => prefix + x).join(' / ')}*\n`;
+          if (item.desc) text += `│   ${item.desc}\n`;
+          text += '\n';
+        }
+
+        text += `└─────────────────\n`;
+      }
+
+      text +=
+`
+╭───「 🌸 MIKU GARDEN 」───
+│ 👑 Creado por: Alex
+╰──────────────────────
+
+Gracias por usar Miku 🌱
+*Pequeños comandos, grandes posibilidades.*`;
+    }
+
+    await client.sendMessage(from, {
+      text,
+      mentions: [jid]
+    }, { quoted: m });
   }
 };

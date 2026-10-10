@@ -1,0 +1,16 @@
+
+# Archivos privados
+node_modules/
+session/
+session-old-*/
+runtime/connected.json
+
+# Respaldos
+*.bak
+*.bak2
+*.bak3
+*.diag.bak
+*.antes-interactivo.bak
+index.js.backup*
+index.js.respaldo
+settings.json.backup*

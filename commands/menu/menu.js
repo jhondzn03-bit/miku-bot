@@ -12,13 +12,7 @@ module.exports = {
     // REACCIÓN ALEATORIA
     // ============================================================
 
-    const REACTIONS = [
-      '🧛🏻',
-      '🎃',
-      '🏚️',
-      '🐦‍🔥',
-      '🐸'
-    ];
+    const REACTIONS = ['💜', '⚡', '𖤐', '✨', '🪻'];
 
     const randomReaction =
       REACTIONS[Math.floor(Math.random() * REACTIONS.length)];
@@ -43,7 +37,6 @@ module.exports = {
     // ============================================================
 
     const up = Math.floor(process.uptime());
-
     const h = Math.floor(up / 3600);
     const mm = Math.floor((up % 3600) / 60);
     const ss = up % 60;
@@ -59,38 +52,32 @@ module.exports = {
 
     const CAT_META = {
       descargas: {
-        icon: '🎃',
-        title: '𝙳𝚎𝚜𝚌𝚊𝚛𝚐𝚊𝚜'
+        icon: '💿',
+        title: '𝙳𝙴𝚂𝙲𝙰𝚁𝙶𝙰𝚂'
       },
-
       grupos: {
-        icon: '🕸️',
-        title: '𝙶𝚛𝚞𝚙𝚘𝚜'
+        icon: '👥',
+        title: '𝙶𝚁𝚄𝙿𝙾𝚂'
       },
-
       juegos: {
-        icon: '🧌',
-        title: '𝙹𝚞𝚎𝚐𝚘𝚜'
+        icon: '🎮',
+        title: '𝙹𝚄𝙴𝙶𝙾𝚂'
       },
-
       herramientas: {
-        icon: '🧪',
-        title: '𝙷𝚎𝚛𝚛𝚊𝚖𝚒𝚎𝚗𝚝𝚊𝚜'
+        icon: '🛠️',
+        title: '𝙷𝙴𝚁𝚁𝙰𝙼𝙸𝙴𝙽𝚃𝙰𝚂'
       },
-
       sistema: {
-        icon: '🕯️',
-        title: '𝚂𝚒𝚜𝚝𝚎𝚖𝚊'
+        icon: '⚙️',
+        title: '𝚂𝙸𝚂𝚃𝙴𝙼𝙰'
       },
-
       owner: {
-        icon: '🦇',
-        title: '𝙾𝚠𝚗𝚎𝚛'
+        icon: '👑',
+        title: '𝙾𝚆𝙽𝙴𝚁'
       },
-
       general: {
-        icon: '👻',
-        title: '𝙼𝙴𝙽𝚄'
+        icon: '✦',
+        title: '𝙶𝙴𝙽𝙴𝚁𝙰𝙻'
       }
     };
 
@@ -109,66 +96,24 @@ module.exports = {
     // ============================================================
 
     const HIDDEN = new Set([
-      'menu',
-      'help',
-      'comandos',
-
-      'antispamstickers',
-      'antispamimage',
-      'antispamimages',
-      'antispamvideos',
-      'antispamaudios',
-      'antispamvoice',
-
-      'everyone',
-      'mencionartodos',
-
-      'ban',
-      'addadmin',
-      'removeadmin',
-      'quitaradmin',
-
-      'del',
-      'delete',
-
-      'adivina',
-      'numero',
-      'guess',
-
-      'verdad',
-      'pregunta',
-      'truth',
-
-      'reto',
-      'challenge',
-      'desafio',
-
-      'ruleta',
-      'wheel',
-      'suerte',
-
-      'time',
-      'reloj',
-
-      'system',
-      'estado',
-
-      'botinfo',
-      'info',
-
-      'velocidad',
-      'ping',
-      'internet',
-      'conexion',
-
-      'groupinfo',
-      'ginfo',
-
-      'fecha',
-      'dia',
-
-      'recursos',
-      'stats'
+      'menu', 'help', 'comandos',
+      'antispamstickers', 'antispamimage',
+      'antispamimages', 'antispamvideos',
+      'antispamaudios', 'antispamvoice',
+      'everyone', 'mencionartodos',
+      'ban', 'addadmin', 'removeadmin', 'quitaradmin',
+      'del', 'delete',
+      'adivina', 'numero', 'guess',
+      'verdad', 'pregunta', 'truth',
+      'reto', 'challenge', 'desafio',
+      'ruleta', 'wheel', 'suerte',
+      'time', 'reloj',
+      'system', 'estado',
+      'botinfo', 'info',
+      'velocidad', 'ping', 'internet', 'conexion',
+      'groupinfo', 'ginfo',
+      'fecha', 'dia',
+      'recursos', 'stats'
     ]);
 
     // ============================================================
@@ -179,7 +124,6 @@ module.exports = {
     const seen = new Set();
 
     if (global.comandos) {
-
       for (const [, mod] of global.comandos) {
 
         const mainCmd = Array.isArray(mod.command)
@@ -188,21 +132,19 @@ module.exports = {
 
         if (
           !mainCmd ||
-          seen.has(mainCmd) ||
+          seen.has(String(mainCmd).toLowerCase()) ||
           HIDDEN.has(String(mainCmd).toLowerCase())
         ) {
           continue;
         }
 
-        seen.add(mainCmd);
+        seen.add(String(mainCmd).toLowerCase());
 
         const cat = String(
           mod.categoria || 'general'
         ).toLowerCase();
 
-        if (!grouped[cat]) {
-          grouped[cat] = [];
-        }
+        if (!grouped[cat]) grouped[cat] = [];
 
         grouped[cat].push({
           cmd: mainCmd,
@@ -222,42 +164,23 @@ module.exports = {
     }
 
     // ============================================================
-    // SEPARADORES
+    // DECORACIÓN
     // ============================================================
 
     const DIVS = [
-      '╭───── 🕸️ ─────╮',
-      '╭───── 🦇 ─────╮',
-      '╭───── 🎃 ─────╮',
-      '╭───── 🕯️ ─────╮',
-      '╭───── 👻 ─────╮',
-      '╭───── 🏚️ ─────╮',
-      '╭───── 🧌 ─────╮',
-      '╭───── 👻 ─────╮'
+      '╭━━━〔 𖤐 〕━━━╮',
+      '╭━━━〔 ✦ 〕━━━╮',
+      '╭━━━〔 ⚡ 〕━━━╮',
+      '╭━━━〔 ♡ 〕━━━╮',
+      '╭━━━〔 ✧ 〕━━━╮'
     ];
 
-    const CMD_ICONS = [
-      '🕯️',
-      '🦇',
-      '🎃',
-      '👻',
-      '🕸️',
-      '🐦‍🔥'
-    ];
-
-    // ============================================================
-    // CATEGORÍAS FINALES
-    // ============================================================
+    const CMD_ICONS = ['✦', '➤', '⚡', '✧', '♡', '𖤐'];
 
     const allCats = [
-      ...CAT_ORDER.filter(
-        c => grouped[c]?.length
-      ),
-
+      ...CAT_ORDER.filter(c => grouped[c]?.length),
       ...Object.keys(grouped).filter(
-        c =>
-          !CAT_ORDER.includes(c) &&
-          grouped[c]?.length
+        c => !CAT_ORDER.includes(c) && grouped[c]?.length
       )
     ];
 
@@ -268,61 +191,45 @@ module.exports = {
     let sections = '';
 
     allCats.forEach((cat, i) => {
-
       const meta = CAT_META[cat] || {
-        icon: '👻',
+        icon: '✦',
         title: String(cat).toUpperCase()
       };
 
-      const div = DIVS[i % DIVS.length];
-
       let block =
-`${div}
+`${DIVS[i % DIVS.length]}
 │
 │ ${meta.icon} ${meta.title}
 │
-├───── 🕸️ ─────`;
+╰┈┈┈┈┈┈┈┈┈┈`;
 
       grouped[cat].forEach(({ cmd, desc }, index) => {
-
-        const icon =
-          CMD_ICONS[index % CMD_ICONS.length];
+        const icon = CMD_ICONS[index % CMD_ICONS.length];
 
         block +=
 `\n│
 │ ${icon} \`${prefix}${cmd}\``;
 
         if (desc) {
-
-          const words = String(desc).split(' ');
+          const words = String(desc).split(/\s+/);
           const lines = [];
-
           let current = '';
 
           for (const word of words) {
-
-            if ((current + ' ' + word).trim().length > 27) {
-              lines.push(current.trim());
+            if ((current + ' ' + word).trim().length > 30) {
+              if (current.trim()) lines.push(current.trim());
               current = word;
             } else {
               current += ' ' + word;
             }
           }
 
-          if (current.trim()) {
-            lines.push(current.trim());
-          }
+          if (current.trim()) lines.push(current.trim());
 
           lines.forEach((line, lineIndex) => {
-
-            if (lineIndex === 0) {
-              block +=
-`\n│   ╰─➤ _${line}_`;
-            } else {
-              block +=
-`\n│      _${line}_`;
-            }
-
+            block += lineIndex === 0
+              ? `\n│   ╰─➤ _${line}_`
+              : `\n│      _${line}_`;
           });
         }
       });
@@ -330,7 +237,7 @@ module.exports = {
       block +=
 `
 │
-╰───── 👻 ─────╯
+╰━━━━━━━━━━━━━━━━━━╯
 
 `;
 
@@ -342,52 +249,56 @@ module.exports = {
     // ============================================================
 
     const caption =
-`╭──── 🕸️ ────╮
+`╭━━━━━━━━〔 𖤐 〕━━━━━━━━╮
 │
-│ 🎃 𝙼𝙸𝙺𝚄 - 𝙱𝙾𝚃
-│ 👻 𝙷𝚊𝚕𝚕𝚘𝚠𝚎𝚎𝚗 𝙴𝚍𝚒𝚝𝚒𝚘𝚗
+│ 𖤐『𝙼𝙸𝙺𝚄 - 𝙱𝙾𝚃』𖤐
 │
-╰──── 🕸️ ────╯
+│       ✦ 𝙿𝚁𝙴𝙼𝙸𝚄𝙼 𝙱𝙾𝚃 ✦
+│    ⚡ 𝚂𝚝𝚢𝚕𝚎 • 𝙿𝚘𝚠𝚎𝚛 • 𝙲𝚊𝚕𝚒𝚍𝚊𝚍
+│
+╰━━━━━━━━〔 𖤐 〕━━━━━━━━╯
 
-🏚️ 𝙱𝚒𝚎𝚗𝚟𝚎𝚗𝚒𝚍𝚘 𝚊 𝚕𝚊 𝚌𝚊𝚜𝚊 𝚍𝚎 𝙼𝚒𝚔𝚞...
+       ♡ 𝙱𝙸𝙴𝙽𝚅𝙴𝙽𝙸𝙳𝙾 ♡
 
-🦇 𝙲𝚞𝚒𝚍𝚊𝚍𝚘 𝚌𝚘𝚗 𝚕𝚘 𝚚𝚞𝚎
-𝚊𝚙𝚊𝚛𝚎𝚌𝚎 𝚎𝚗 𝚕𝚊 𝚘𝚜𝚌𝚞𝚛𝚒𝚍𝚊𝚍 👻
+   𝙴𝚕 𝚙𝚘𝚍𝚎𝚛 𝚍𝚎 𝙼𝚒𝚔𝚞
+   𝚎𝚜𝚝𝚊́ 𝚎𝚗 𝚝𝚞𝚜 𝚖𝚊𝚗𝚘𝚜... ✨
 
-╭──── 🕯️ 𝙸𝚗𝚏𝚘 ────╮
+╭━━━━━━〔 ✦ 〕━━━━━━╮
+│      𝙸𝙽𝙵𝙾𝚁𝙼𝙰𝙲𝙸𝙾́𝙽
+├━━━━━━━━━━━━━━━━━━━
 │
-│ 🎃 *𝙿𝚛𝚎𝚏𝚒𝚓𝚘*
-│    \`${prefix}\`
+│ 𖤐 𝙿𝚛𝚎𝚏𝚒𝚓𝚘
+│   ╰➤ \`${prefix}\`
 │
-│ 🧪 *𝙰𝙿𝙸*
-│    ${apiReady ? '🟢 _Activa_' : '🔴 _Pendiente_'}
+│ ⚙️ 𝙴𝚜𝚝𝚊𝚍𝚘 𝙰𝙿𝙸
+│   ╰➤ ${apiReady ? '🟢 _Activa_' : '🔴 _Pendiente_'}
 │
-│ ⏳ *𝚄𝚙𝚝𝚒𝚖𝚎*
-│    \`${uptime}\`
+│ ⏱️ 𝚃𝚒𝚎𝚖𝚙𝚘 𝚊𝚌𝚝𝚒𝚟𝚘
+│   ╰➤ \`${uptime}\`
 │
-│ 📜 *𝙲𝚘𝚖𝚊𝚗𝚍𝚘𝚜*
-│    \`${seen.size}\`
+│ 📚 𝙲𝚘𝚖𝚊𝚗𝚍𝚘𝚜
+│   ╰➤ \`${seen.size}\`
 │
-╰───── 🕯️ ─────╯
+╰━━━━━━━━━━━━━━━━━━━╯
 
-🐦‍🔥 𝙻𝚊 𝚗𝚘𝚌𝚑𝚎 𝚊𝚙𝚎𝚗𝚊𝚜
-𝚌𝚘𝚖𝚒𝚎𝚗𝚣𝚊...
+          ✧ 𝙲𝙾𝙼𝙰𝙽𝙳𝙾𝚂 ✧
+       𖤐━━━━━━━━━━━━𖤐
 
 ${sections}
-╭───── 👻 ─────╮
+╭━━━━━━━━〔 ♡ 〕━━━━━━━━╮
 │
-│ 🦇 𝙼𝙸𝙺𝚄 - 𝙱𝙾𝚃
-│ 🎃 𝙷𝚊𝚙𝚙𝚢 𝙷𝚊𝚕𝚕𝚘𝚠𝚎𝚎𝚗
-│ 🏚️ 𝙽𝚘 𝚎𝚗𝚝𝚛𝚎𝚜 𝚊 𝚌𝚊𝚜𝚊...
+│ 𖤐『𝙼𝙸𝙺𝚄 - 𝙱𝙾𝚃』𖤐
 │
-╰───── 🕸️ ─────╯`;
+│    ⚡ 𝙶𝚛𝚊𝚌𝚒𝚊𝚜 𝚙𝚘𝚛 𝚞𝚜𝚊𝚛 𝙼𝚒𝚔𝚞
+│       ✦ 𝚂𝚒𝚎𝚖𝚙𝚛𝚎 𝚊 𝚘𝚝𝚛𝚘 𝚗𝚒𝚟𝚎𝚕 ✦
+│
+╰━━━━━━━━〔 𖤐 〕━━━━━━━━╯`;
 
     // ============================================================
     // ENVIAR MENÚ
     // ============================================================
 
     try {
-
       const imagePath = path.join(
         process.cwd(),
         'videos-imagenes',
@@ -400,21 +311,14 @@ ${sections}
           image: fs.readFileSync(imagePath),
           caption
         },
-        {
-          quoted: m
-        }
+        { quoted: m }
       );
 
-    } catch {
-
+    } catch (err) {
       await client.sendMessage(
         m.key.remoteJid,
-        {
-          text: caption
-        },
-        {
-          quoted: m
-        }
+        { text: caption },
+        { quoted: m }
       );
     }
   }
